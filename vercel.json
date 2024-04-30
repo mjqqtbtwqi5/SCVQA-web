@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "website/wsgi.py",
-      "use": "@vercel/python",
+      "use": "@natanffs/vercel-python-wsgi",
       "config": { "maxLambdaSize": "15mb" }
     }
   ],
