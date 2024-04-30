@@ -1,9 +1,10 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "website/wsgi.py",
-      "use": "@natanffs/vercel-python-wsgi",
-      "config": { "maxLambdaSize": "15mb", "runtime": "3.9.18" }
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "Python3.9.18" }
     }
   ],
   "routes": [
