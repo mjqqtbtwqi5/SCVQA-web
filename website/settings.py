@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "scvqa",
-    "scvqa.apps.ScvqaConfig",
+    # "scvqa.apps.ScvqaConfig",
 ]
 
 MIDDLEWARE = [
@@ -57,7 +57,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "website.wsgi.application"
+# WSGI_APPLICATION = "website.wsgi.application"
 WSGI_APPLICATION = "website.wsgi.app"
 
 
