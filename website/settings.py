@@ -13,20 +13,19 @@ SECRET_KEY = "django-insecure-3@6e6liy0#j_hb$skw^!z)&kv-_9)4ro4&ad5s)z_*k5-8+@0s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    # "django.contrib.admin",
-    # "django.contrib.auth",
-    # "django.contrib.contenttypes",
-    # "django.contrib.sessions",
-    # "django.contrib.messages",
-    # "django.contrib.staticfiles",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     "scvqa",
-    # "scvqa.apps.ScvqaConfig",
 ]
 
 MIDDLEWARE = [
@@ -57,8 +56,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = "website.wsgi.application"
-WSGI_APPLICATION = "website.wsgi.app"
+WSGI_APPLICATION = "website.wsgi.application"
 
 
 # Database
