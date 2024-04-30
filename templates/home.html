@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Video Quality Assessment on Screen Content Video</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <br />
+      <p class="text-end" style="font-size: small">
+        <a href="https://github.com/mjqqtbtwqi5/SCVQA" target="_blank"
+          >https://github.com/mjqqtbtwqi5/SCVQA</a
+        >
+      </p>
+      <br />
+      <h1 class="text-center">
+        Video Quality Assessment on Screen Content Video
+      </h1>
+      <hr class="border border-dark border-1 opacity-100" />
+      <p class="text-center">
+        Winky, Yingqi CHEN | winky.chen@connect.polyu.hk
+      </p>
+      <br />
+      <br />
+      <br />
+      <h2>Model Performance Summary</h2>
+      <div class="row">
+        <div class="col col-auto">
+          <img
+            width="640"
+            src="{% static 'image/performance_summary.png' %}"
+            class="img-fluid"
+          />
+        </div>
+        <div class="col">
+          The table illustrates the overall testing performance results with
+          three performance indicators (PLCC, SROCC, RMSE), and the
+          <b>top three results</b> are defined in <b style="color: red">red</b>,
+          <b style="color: blue">blue</b>, and <b>black</b>, respectively.
+          <br /><br />
+          On this website, the best average performance regarding PLCC, SROCC,
+          and RMSE will be chosen to predict the video's quality score:
+          <b>ResNet-50-Transformer-based model</b>
+          <br /><br />
+          <u>There are two model instances</u>:
+          <br />
+          <ul>
+            <li>
+              <b>ResNet-50-Transformer-based model</b> trained on
+              <b>SCVD database</b>
+            </li>
+            <li>
+              <b>ResNet-50-Transformer-based model</b> trained on
+              <b>CSCVQ database</b>
+            </li>
+          </ul>
+          <u>There are two predict options</u>:
+          <br />
+          <ul>
+            <li>
+              <b>Option 1</b>: Uploading a video (720x1280) with .yuv format
+            </li>
+            <li>
+              <b>Option 2</b>: Choosing pre-extract features from video examples
+              to predict quality scores
+            </li>
+          </ul>
+          <br />
+          <i style="font-size: smaller"
+            ><b>*Option 1</b> may take <b>around 5 minutes</b> to process since
+            this web hosting platform is free, so the computational power is
+            poor.</i
+          >
+        </div>
+      </div>
+      <br />
+      <br />
+      <br />
+      <h2>Option 1</h2>
+      <hr class="border border-dark border-1 opacity-100" />
+      <br />
+      <form id="videoAssessmentForm" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- <input type="file" name="videoFile" id="videoFile" /> -->
+        <div class="input-group">
+          <input
+            accept=".yuv"
+            type="file"
+            class="form-control"
+            id="videoFile"
+            name="videoFile"
+            aria-describedby="videoAssessmentButton"
+            aria-label="Upload"
+          />
+          <button class="btn btn-dark" type="submit" id="videoAssessmentButton">
+            Predict
+          </button>
+        </div>
+        <br />
+
+        <p class="card-text placeholder-glow">
+          <b>Predictive scores: </b>
+          <br />
+          <b>ResNet-50-Transformer-based model (SCVD):</b
+          ><span id="videoAssessmentScoreSCVD" class="col-1"></span>
+          <br />
+          <b>ResNet-50-Transformer-based model (CSCVQ):</b
+          ><span id="videoAssessmentScoreCSCVQ" class="col-1"></span>
+        </p>
+      </form>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h2>Option 2</h2>
+      <hr class="border border-dark border-1 opacity-100" />
+      <br />
+      <div class="mb-3 row">
+        <label for="searchByVideoName" class="col-sm-2 col-form-label"
+          >Search by video name</label
+        >
+        <div class="col-sm-10">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="searchByVideoName"
+          >
+            <option selected></option>
+            <option value="sc_ChromeBrowsing_1280x720_30_8bit_420_300f">
+              sc_ChromeBrowsing_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_desktop_1280x720_30_8bit_420_300f">
+              sc_desktop_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_flyingGraphics_1280x720_30_8bit_420_303f">
+              sc_flyingGraphics_1280x720_30_8bit_420_303f
+            </option>
+            <option value="sc_map_1280x720_30_8bit_420_303f">
+              sc_map_1280x720_30_8bit_420_303f
+            </option>
+            <option value="sc_mutitask_1280x720_30_8bit_420_300f">
+              sc_mutitask_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_programming_1280x720_30_8bit_420_303f">
+              sc_programming_1280x720_30_8bit_420_303f
+            </option>
+            <option value="sc_robot_1280x720_30_8bit_420_300f">
+              sc_robot_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_SlideEditing_1280x720_30_8bit_420_300f">
+              sc_SlideEditing_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_slideShow_1280x720_30_8bit_420_300f">
+              sc_slideShow_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_videoConferencing_1280x720_30_8bit_420_300f">
+              sc_videoConferencing_1280x720_30_8bit_420_300f
+            </option>
+            <option value="sc_wordEditing_1280x720_30_8bit_420_303f">
+              sc_wordEditing_1280x720_30_8bit_420_303f
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3 row">
+        <label for="searchByScore" class="col-sm-2 col-form-label"
+          >Search by subjective score</label
+        >
+        <div class="col-sm-10">
+          <select
+            class="form-select"
+            aria-label="Default select example"
+            id="searchByScore"
+          >
+            <option selected></option>
+            <option value="0,19">0-19</option>
+            <option value="20,39">20-39</option>
+            <option value="40,59">40-59</option>
+            <option value="60,79">60-79</option>
+            <option value="80,100">80-100</option>
+          </select>
+        </div>
+      </div>
+      <br />
+
+      <table id="videoList" class="table">
+        <thead></thead>
+        <tbody>
+          {% for video in video_list %}
+          <tr>
+            <td>
+              <div class="row">
+                <div class="col">
+                  <div>
+                    <b>Video name: </b
+                    ><span class="video_name">{{video.video_name}}</span>
+                  </div>
+                  <div>
+                    <b>Subjective score: </b
+                    ><span class="mos">{{video.mos}}</span> / 100
+                  </div>
+                  <br />
+                  <div>
+                    <form
+                      id="featureAssessmentForm-{{video.video_name}}"
+                      class="featureAssessmentForm"
+                    >
+                      {% csrf_token %}
+                      <input
+                        type="hidden"
+                        name="videoName"
+                        value="{{video.video_name}}"
+                      />
+                      <b>Predictive scores: </b>
+                      <ul>
+                        <li>
+                          <b>ResNet-50-Transformer-based model (SCVD): </b
+                          ><span class="predict_mos_SCVD"></span>
+                        </li>
+                        <li>
+                          <b>ResNet-50-Transformer-based model (CSCVQ): </b
+                          ><span class="predict_mos_CSCVQ"></span>
+                        </li>
+                      </ul>
+                      <br />
+                      <br />
+                      <button type="submit" class="btn btn-dark">
+                        Predict
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <div class="col">
+                  <img
+                    width="640"
+                    height="360"
+                    src="{% static video.snapshot_file %}"
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/inference.js' %}"></script>
+    <script>
+      $(document).ready(function () {
+        let videoName;
+        let minSubjectiveScore = 0;
+        let maxSubjectiveScore = 100;
+        function toggleVideoList() {
+          $("#videoList tr").filter(function () {
+            $(this).toggle(
+              $(this)
+                .find(".video_name")
+                .text()
+                .toLowerCase()
+                .indexOf(videoName) > -1 &&
+                $(this).find(".mos").text() > minSubjectiveScore &&
+                $(this).find(".mos").text() < maxSubjectiveScore
+            );
+          });
+        }
+        $("#searchByVideoName").on("change", function () {
+          videoName = $(this).val().toLowerCase();
+          toggleVideoList();
+        });
+
+        $("#searchByScore").on("change", function () {
+          let subjectiveScore = $(this).val();
+          let arr = subjectiveScore.split(",");
+
+          if (arr.length > 1) {
+            minSubjectiveScore = arr[0];
+            maxSubjectiveScore = arr[1];
+          } else {
+            minSubjectiveScore = 0;
+            maxSubjectiveScore = 100;
+          }
+          toggleVideoList();
+        });
+      });
+    </script>
+  </body>
+</html>
