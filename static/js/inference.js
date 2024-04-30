@@ -1,4 +1,8 @@
 $(document).ready(function () {
+  let timerInterval;
+  function pad(number) {
+    return number.toString().padStart(2, "0");
+  }
   $("#videoAssessmentForm").submit(function (e) {
     e.preventDefault();
     $("#videoAssessmentButton").prop("disabled", true);
@@ -7,6 +11,24 @@ $(document).ready(function () {
 
     let form = $(this);
     let formData = new FormData(form[0]);
+
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+    $("#timer").html("00:00:00");
+    timerInterval = setInterval(() => {
+      seconds++;
+      if (seconds === 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes === 60) {
+          minutes = 0;
+          hours++;
+        }
+      }
+
+      $("#timer").html(`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`);
+    }, 1000);
 
     $.ajax({
       type: "POST",
@@ -26,6 +48,7 @@ $(document).ready(function () {
         $("#videoAssessmentScoreSCVD").removeClass("placeholder");
         $("#videoAssessmentScoreCSCVQ").removeClass("placeholder");
         $("#videoAssessmentButton").prop("disabled", false);
+        clearInterval(timerInterval);
       },
     });
   });
@@ -47,7 +70,6 @@ $(document).ready(function () {
         form.find(".predict_mos_CSCVQ").html(response.qualityScoreCSCVQ);
       },
       error: function (xhr, status, error) {
-        // Handle errors
         console.log(error);
       },
     });
